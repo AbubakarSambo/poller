@@ -10,6 +10,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
 
+const port = process.env.PORT || 8000
+
 var dbConfig = require('./config/config.js');
 var mongoose = require('mongoose');
 
@@ -34,6 +36,6 @@ app.get('/', function(req, res){
 require('./app/routes/volunteer.js')(app);
 
 // listen for requests
-app.listen(3000, function(){
+app.listen(port, function(){
     console.log("Server is listening on port 3000");
 });
