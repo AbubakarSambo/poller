@@ -1,4 +1,5 @@
-var axios = require('axios');
+var axios = require('axios')
+const twilio = require('twilio')
 
 var Volunteer = require('../models/volunteer.js');
 var googleMapsClient = require('@google/maps').createClient({
@@ -139,6 +140,16 @@ exports.findAll = function (req, res) {
             console.log(err);
             res.status(500).send({message: "Some error occurred while retrieving volunteers."});
         } else {
+            let accountSid = 'AC29bd8166067d95be88f6ce44ce53df5a'
+            let authToken = '329955eb209335d85af876937107502c'
+            let client = new twilio(accountSid, authToken)
+            client.messages.create({
+                body: 'Testing',
+                to: '+14163897255',  // Text this number
+                from: '+16476994801' // From a valid Twilio number
+            })
+            .then((message) => console.log('twwwwiiiiiiiiiiiiiii',message.sid))
+            .catch((error) => console.log('errr',error))
             res.send(volunteers);
         }
     });
