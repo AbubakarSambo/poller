@@ -6,6 +6,7 @@ module.exports = function(app) {
     app.post('/volunteers', volunteer.create);
     app.post('/volunteers/donors',volunteer.getDistance)
     app.post('/volunteers/foodbank',volunteer.getDistanceBanks)
+    app.post('/volunteer/availability',volunteer.acceptText)
 
     // // Retrieve all Notes
     app.get('/volunteer', volunteer.findAll);

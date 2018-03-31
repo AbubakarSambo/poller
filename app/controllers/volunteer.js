@@ -6,6 +6,9 @@ var googleMapsClient = require('@google/maps').createClient({
     key: 'AIzaSyD_LPYQsjwLnEh1fcK74vSsytYgvWHndZQ'
 });
 
+const accountSid = 'AC29bd8166067d95be88f6ce44ce53df5a'
+const authToken = '329955eb209335d85af876937107502c'
+const client = new twilio(accountSid, authToken)
 
 // Create and Save a new Note
 exports.create = function (req, res) {
@@ -29,6 +32,13 @@ mapsCall = (origin, dest) => {
     return axios({
         method: 'get',
         url: `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${origin}&destinations=${dest}&key=AIzaSyD_LPYQsjwLnEh1fcK74vSsytYgvWHndZQ`,
+    })
+}
+sendText = (phone,pickupAddress) => {
+    return client.messages.create({
+        body: `Can you pick up the food item at ${pickupAddress}, reply coming soon...`,
+        to: `+1${phone}`,  // Text this number
+        from: '+16476994801' // From a valid Twilio number
     })
 }
 getVolunteers = (origin, dest) => {
@@ -88,13 +98,28 @@ exports.getDistance = function (req, res) {
                 })
                 return bool
              })
-            // return res.status(200).send(valData)
-            return res.status(200).send(timeSorted)
+             let textPromises = timeSorted.map((item) =>{
+                 return this.sendText(item.volunteer.phone,req.body.origin)
+             })
+             console.log(textPromises)
+             Promise.all(textPromises).then((promiseitem) => {
+                 console.log(promiseitem)
+             }).catch((error) => {
+                 console.log(error)
+             })
+             return res.status(200).send(timeSorted)
           }).catch((error) =>{
               console.log(error)
           });
     })
 };
+exports.acceptText = function (req, res) {
+    
+    var twiml = new twilio.TwimlResponse();
+    twiml.message('Got your response, replying you...');
+    res.writeHead(200, {'Content-Type': 'text/xml'});
+    res.end(twiml.toString());
+}
 
 exports.getDistanceBanks = function (req, res) {
     var postalCodes = []
@@ -140,16 +165,16 @@ exports.findAll = function (req, res) {
             console.log(err);
             res.status(500).send({message: "Some error occurred while retrieving volunteers."});
         } else {
-            let accountSid = 'AC29bd8166067d95be88f6ce44ce53df5a'
-            let authToken = '329955eb209335d85af876937107502c'
-            let client = new twilio(accountSid, authToken)
-            client.messages.create({
-                body: 'Testing',
-                to: '+14163897255',  // Text this number
-                from: '+16476994801' // From a valid Twilio number
-            })
-            .then((message) => console.log('twwwwiiiiiiiiiiiiiii',message.sid))
-            .catch((error) => console.log('errr',error))
+            // let accountSid = 'AC29bd8166067d95be88f6ce44ce53df5a'
+            // let authToken = '329955eb209335d85af876937107502c'
+            // let client = new twilio(accountSid, authToken)
+            // client.messages.create({
+            //     body: 'Testing',
+            //     to: '+14163897255',  // Text this number
+            //     from: '+16476994801' // From a valid Twilio number
+            // })
+            // .then((message) => console.log('twwwwiiiiiiiiiiiiiii',message.sid))
+            // .catch((error) => console.log('errr',error))
             res.send(volunteers);
         }
     });

@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
 
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 3000
 
 var dbConfig = require('./config/config.js');
 var mongoose = require('mongoose');
@@ -30,12 +30,12 @@ mongoose.connection.once('open', function() {
 
 // define a simple route
 app.get('/', function(req, res){
-    res.json({"message": "Welcome to EasyNotes application. Take notes quickly. Organize and keep track of all your notes."});
+    res.json({"message": "Welcome to the LiftOvers API"});
 });
 
 require('./app/routes/volunteer.js')(app);
 
 // listen for requests
 app.listen(port, function(){
-    console.log("Server is listening on port 3000");
+    console.log(`Server is listening on port ${port}`);
 });
