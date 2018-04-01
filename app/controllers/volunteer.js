@@ -115,7 +115,7 @@ exports.getDistance = function (req, res) {
 };
 exports.acceptText = function (req, res) {
     
-    var twiml = new twilio.TwimlResponse();
+    var twiml = new twilio.twiml.MessagingResponse();
     twiml.message('Got your response, replying you...');
     res.writeHead(200, {'Content-Type': 'text/xml'});
     res.end(twiml.toString());
