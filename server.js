@@ -33,7 +33,7 @@ app.get('/', function(req, res){
     res.json({"message": "Welcome to the LiftOvers API"});
 });
 
-require('./app/routes/volunteer.js')(app);
+require('./app/routes/index.js')(app);
 
 // listen for requests
 app.listen(port, function(){
