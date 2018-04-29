@@ -10,17 +10,13 @@ var VolunteerSchema = mongoose.Schema({
 });
 var LiftSchema = mongoose.Schema({
     origin: String,
-    availability: [{
+    availability: {
         day: String,
-        timeStart: {
-            hour: Number,
-            minute: Number,
-        },
-        timeFinish: {
+        time: {
             hour: Number,
             minute: Number,
         }
-    }],
+    },
     hasVolunteer: {type: Boolean, default: false },
     volunteer: [VolunteerSchema],
 

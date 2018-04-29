@@ -24,6 +24,7 @@ getVolunteers = (origin, dest) => {
 }
 exports.requestLift = function (req, res) {
     console.log(req.body)
+    console.log(req.body.availability.timeStart)
     var postalCodes = []
     let liftId = null
     let volunteersTexted = []
