@@ -23,6 +23,7 @@ getVolunteers = (origin, dest) => {
     return Volunteer.find()
 }
 exports.requestLift = function (req, res) {
+    console.log(req.body)
     var postalCodes = []
     let liftId = null
     let volunteersTexted = []
