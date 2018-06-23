@@ -13,8 +13,9 @@ const client = new twilio(accountSid, authToken)
 
 
 sendText = (phone, pickupAddress) => {
+    console.log('sendingg texttt',phone,pickupAddress)
     return client.messages.create({
-        body: `Can you pick up the food item at ${pickupAddress}, reply coming soon...`,
+        body: `Can you pick up the food item at ${pickupAddress}, reply with yes or no`,
         to: `+1${phone}`,  // Text this number
         from: '+16476994801' // From a valid Twilio number
     })
@@ -23,8 +24,6 @@ getVolunteers = (origin, dest) => {
     return Volunteer.find()
 }
 exports.requestLift = function (req, res) {
-    console.log(req.body)
-    console.log(req.body.availability.timeStart)
     var postalCodes = []
     let liftId = null
     let volunteersTexted = []
@@ -59,28 +58,26 @@ exports.requestLift = function (req, res) {
             })
 
             let timeSorted = valData.filter((item) => {
+                console.log('///////////', item)
                 let bool = false
-                req.body.availability.forEach((available) => {
                     item.volunteer.availability.forEach((volAvail) => {
-                        if (available.day.toLowerCase() === volAvail.day.toLowerCase()) {
+                        if (req.body.availability.day.toLowerCase() === volAvail.day.toLowerCase()) {
                             bool = true
                         }
                     })
-                })
                 return bool
             }).filter((item) => {
                 let bool = false
-                req.body.availability.forEach((available) => {
                     item.volunteer.availability.forEach((volAvail) => {
-                        if (volAvail.day.toLowerCase() === available.day.toLowerCase()) {
-                            if ((volAvail.timeStart.hour >= available.timeStart.hour) && (volAvail.timeStart.hour < available.timeFinish.hour)) {
+                        if (volAvail.day.toLowerCase() === req.body.availability.day.toLowerCase()) {
+                            if ((volAvail.timeStart.hour <= req.body.availability.time.hour)) {
                                 bool = true
                             }
                         }
                     })
-                })
                 return bool
             })
+            console.log('timesorted', timeSorted)
             let textPromises = timeSorted.map((item) => {
                 return this.sendText(item.volunteer.phone, req.body.origin)
             })

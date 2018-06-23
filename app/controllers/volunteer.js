@@ -134,7 +134,7 @@ exports.acceptText = function (req, res) {
                 return vol.phone === fromPhone
             })
             Lifts.findOneAndUpdate({_id: item[0]._id} ,{hasVolunteer: true}).then((ll) =>{
-                console.log('ll',ll)
+                
             })
             .catch((error) => {
                 console.log(error)

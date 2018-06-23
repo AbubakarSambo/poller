@@ -9,8 +9,6 @@ module.exports = function(app) {
     app.post('/volunteers/foodbank',volunteer.getDistanceBanks)
     app.post('/lift/request',lift.requestLift)
     app.post('/volunteer/availability',volunteer.acceptText)
-
-    // // Retrieve all Notes
     app.get('/volunteer', volunteer.findAll);
 
     // // Retrieve a single Note with noteId
