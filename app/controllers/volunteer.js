@@ -118,9 +118,8 @@ exports.acceptText = function (req, res) {
     let body = req.body.body
     let fromPhone = req.body.from
     var twiml = new twilio.twiml.MessagingResponse();
-
-    console.log(req.body)
     if (body === 'yes') {
+        console.log('//////// response is yes')
         // if body is yes && hasvolunteer is false , change lift model hasvolunteer to true and change volunteer number to formPhone
         Lifts.find({ hasVolunteer: false, 'volunteer.phone': fromPhone }).then((item) => {
             console.log(item)
@@ -134,7 +133,7 @@ exports.acceptText = function (req, res) {
                 return vol.phone === fromPhone
             })
             Lifts.findOneAndUpdate({_id: item[0]._id} ,{hasVolunteer: true}).then((ll) =>{
-                
+                console.log('updated')
             })
             .catch((error) => {
                 console.log(error)

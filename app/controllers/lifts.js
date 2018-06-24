@@ -17,7 +17,7 @@ sendText = (phone, pickupAddress) => {
     return client.messages.create({
         body: `Can you pick up the food item at ${pickupAddress}, reply with yes or no`,
         to: `+1${phone}`,  // Text this number
-        from: '+16476994801' // From a valid Twilio number
+        from: '+16476952333' // From a valid Twilio number
     })
 }
 getVolunteers = (origin, dest) => {
@@ -58,7 +58,6 @@ exports.requestLift = function (req, res) {
             })
 
             let timeSorted = valData.filter((item) => {
-                console.log('///////////', item)
                 let bool = false
                     item.volunteer.availability.forEach((volAvail) => {
                         if (req.body.availability.day.toLowerCase() === volAvail.day.toLowerCase()) {
