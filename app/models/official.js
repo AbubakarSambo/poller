@@ -1,14 +1,7 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const SupervisorSchema = mongoose.Schema({
-    firstName: String,
-    lastName: String,
-    phone: String,
-    state: String,
-    lga: String,
-}, {
-    timestamps: true
-});
+
 const OfficialSchema = mongoose.Schema({
     firstName: String,
     lastName: String,
@@ -18,9 +11,9 @@ const OfficialSchema = mongoose.Schema({
     puCode: String,
     puName: String,
     ward: String,
-    supervisor: [SupervisorSchema],
+    supervisor: [{ type: Schema.Types.ObjectId, ref: 'Supervisor' }],
 }, {
     timestamps: true
 });
 
-module.exports = mongoose.model('Volunteer', OfficialSchema);
+module.exports = mongoose.model('Official', OfficialSchema);

@@ -10,4 +10,4 @@ var SupervisorSchema = mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('Volunteer', SupervisorSchema);
+module.exports = mongoose.model('Supervisor', SupervisorSchema);

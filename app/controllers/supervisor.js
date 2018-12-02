@@ -1,7 +1,6 @@
-const Official = require('../models/official.js');
-const Supervisor = require('../models/supervisor.js');
+var Supervisor = require('../models/supervisor.js');
 
-const config = require('../../config/config.js');
+var config = require('../../config/config.js');
 
 const AfricasTalking = require('africastalking')(config.options)
 sms = AfricasTalking.SMS
@@ -13,24 +12,18 @@ exports.create = function (text,phone ) {
     const lastName = text.split(" ")[2]
     const state = text.split(" ")[3]
     const lga = text.split(" ")[4]
-    const puCode = text.split(" ")[5]
-    const puName = text.split(" ")[6]
-    const ward = text.split(" ")[7]
 
 
-    let official = new Official({
+    let supervisor = new Supervisor({
         firstName,
         lastName,
         phone,
         state,
         lga,
-        puCode,
-        puName,
-        ward,
     })
 
-    Official.find({phone}).then((singleOfficial) => {
-        if(singleOfficial.length !== 0){
+    Supervisor.find({phone}).then((singleSupervisor) => {
+        if(singleSupervisor.length !== 0){
             const smsOptions = {
                 to: phone,
                 message: `Phone Number in use already`
@@ -43,11 +36,11 @@ exports.create = function (text,phone ) {
             });
           }
           else{
-            official.save(function (err, data) {
+            supervisor.save(function (err, data) {
                 if (err) {
                     const smsOptions = {
                         to: phone,
-                        message: `Could not register: ${err}`
+                        message: `Could not register supervisor: ${err}`
                     }
                     sms.send(smsOptions).then(response => {
                         console.log(response);
@@ -58,7 +51,7 @@ exports.create = function (text,phone ) {
                 } else {
                     const smsOptions = {
                         to: phone,
-                        message: 'Registered Successfully'
+                        message: 'Registered Supervisor Successfully'
                     }
                     sms.send(smsOptions).then(response => {
                         console.log(response);
@@ -72,21 +65,30 @@ exports.create = function (text,phone ) {
     })
 }
 
-exports.assignSupervisor = (req, res) => {
-    const { body } = req
-    const { official, supervisor } = body
+exports.createViaApi = function (req,res ) {
 
-    Supervisor.find({phone: supervisor}).then((singleSupervisor) => {
-        console.log(singleSupervisor,'lll')
-        Official.findOneAndUpdate({ phone: official }, { supervisor: singleSupervisor }).then((item) => {
-            res.status(200).send({message: 'Successfully added supervisor to official'})
-        }).catch((error) => {
-            res.status(400).send({message: `couldn't add supervisor: ${error}`})
-        })
-    }).catch((error) => {
-        res.status(500).send({message: `couldn't add supervisor: ${error}`})
+    const { firstName, lastName, state,phone, lga } = req.body
+
+    let supervisor = new Supervisor({
+        firstName,
+        lastName,
+        phone,
+        state,
+        lga,
     })
-    
 
-        
+    Supervisor.find({phone}).then((singleSupervisor) => {
+        if(singleSupervisor.length !== 0){
+            res.status(400).send({message: 'Supervisor exists'})
+          }
+          else{
+            supervisor.save(function (err, data) {
+                if (err) {
+                    return res.status(500).send({message: err})
+                } else {
+                    return res.status(200).send({message: 'created Successfully'})
+                }
+            });
+          }
+    })
 }
