@@ -30,7 +30,7 @@ mongoose.connection.once('open', function() {
 
 // define a simple route
 app.get('/', function(req, res){
-    res.json({"message": "Welcome to the LiftOvers API"});
+    res.json({"message": "Welcome to the pollers API"});
 });
 
 require('./app/routes/index.js')(app);
