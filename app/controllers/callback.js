@@ -6,7 +6,6 @@ const actions = require('./actions.js');
 exports.accept = function (req, res) {
     // Create and Save a new Note
     const { body } = req
-    console.log(req.body)
     const { text, from, date } = body
 
     const action = text.split(" ")[0]
