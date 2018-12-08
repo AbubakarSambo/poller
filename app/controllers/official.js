@@ -1,5 +1,6 @@
 const Official = require('../models/official.js');
 const Supervisor = require('../models/supervisor.js');
+const PU = require('../models/pu.js');
 
 const config = require('../../config/config.js');
 
@@ -14,8 +15,6 @@ exports.create = function (text,phone ) {
     const state = text.split(" ")[3]
     const lga = text.split(" ")[4]
     const puCode = text.split(" ")[5]
-    const puName = text.split(" ")[6]
-    const ward = text.split(" ")[7]
 
 
     let official = new Official({
@@ -89,4 +88,40 @@ exports.assignSupervisor = (req, res) => {
     
 
         
+}
+
+exports.createViaApi = function (req,res ) {
+    const { firstName, lastName, puCode,phone, supervisor} = req.body
+
+    Official.find({phone}).then((singleOfficial) => {
+        if(singleOfficial.length !== 0){
+            res.status(400).send({message: 'Official exists'})
+          }
+          else{
+            PU.findOne({code: puCode}).then((singlePu) => {
+                Supervisor.findOne({phone: supervisor}).then((singleSupervisor) => {
+                    if(singleSupervisor.length !==0){
+                        let newOfficial = new Official({ firstName, lastName, phone, pu: singlePu, supervisor: singleSupervisor})
+                        newOfficial.save().then((newOffish) => {
+                            return res.status(200).send(newOffish)
+                        })
+                        .catch((err) => {
+                            return res.status(500).send({message: err})
+                        })
+                    }
+                    else{
+                        res.status(400).send({message: 'No such supervisor'})
+                    }
+                })
+                .catch(error => {
+                    console.log('error')
+                    res.status(500).send(error);
+                })
+            })
+            .catch(error => {
+                res.status(500).send(error);
+            })
+            
+          }
+    })
 }

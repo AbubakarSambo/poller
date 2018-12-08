@@ -6,12 +6,8 @@ const OfficialSchema = mongoose.Schema({
     firstName: String,
     lastName: String,
     phone: String,
-    state: String,
-    lga: String,
-    puCode: String,
-    puName: String,
-    ward: String,
-    supervisor: [{ type: Schema.Types.ObjectId, ref: 'Supervisor' }],
+    pu: { type: Schema.Types.ObjectId, ref: 'PU' },
+    supervisor: { type: Schema.Types.ObjectId, ref: 'Supervisor' },
 }, {
     timestamps: true
 });

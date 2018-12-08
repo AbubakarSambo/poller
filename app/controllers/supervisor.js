@@ -1,5 +1,5 @@
 var Supervisor = require('../models/supervisor.js');
-
+var PU = require('../models/pu.js');
 var config = require('../../config/config.js');
 
 const AfricasTalking = require('africastalking')(config.options)
@@ -67,28 +67,26 @@ exports.create = function (text,phone ) {
 
 exports.createViaApi = function (req,res ) {
 
-    const { firstName, lastName, state,phone, lga } = req.body
-
-    let supervisor = new Supervisor({
-        firstName,
-        lastName,
-        phone,
-        state,
-        lga,
-    })
+    const { firstName, lastName, state,phone, lga ,puCode } = req.body
 
     Supervisor.find({phone}).then((singleSupervisor) => {
         if(singleSupervisor.length !== 0){
             res.status(400).send({message: 'Supervisor exists'})
           }
           else{
-            supervisor.save(function (err, data) {
-                if (err) {
-                    return res.status(500).send({message: err})
-                } else {
-                    return res.status(200).send({message: 'created Successfully'})
-                }
-            });
+            PU.findOne({code: puCode}).then((pu) => {
+                let supervisor = new Supervisor({ firstName, lastName, phone, state, lga, puCode, pu })
+                supervisor.save().then((newSupervisor) => {
+                    return res.status(200).send(newSupervisor)
+                })
+                .catch((err) => {
+                    return res.status(400).send({message: err})
+                })
+            })
+            .catch(error => {
+                res.status(500).send(error);
+            })
+            
           }
     })
 }
