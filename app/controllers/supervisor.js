@@ -31,10 +31,8 @@ exports.create = function (text,phone ) {
                 message: `Phone Number in use already`
             }
             sms.send(smsOptions).then(response => {
-                console.log(response);
             })
             .catch(error => {
-                console.log(error);
             });
           }
           else{
@@ -45,10 +43,8 @@ exports.create = function (text,phone ) {
                         message: `Could not register supervisor: ${err}`
                     }
                     sms.send(smsOptions).then(response => {
-                        console.log(response);
                     })
                     .catch(error => {
-                        console.log(error);
                     });
                 } else {
                     const smsOptions = {
@@ -56,10 +52,8 @@ exports.create = function (text,phone ) {
                         message: 'Registered Supervisor Successfully'
                     }
                     sms.send(smsOptions).then(response => {
-                        console.log(response);
                     })
                     .catch(error => {
-                        console.log(error);
                     });
                 }
             });

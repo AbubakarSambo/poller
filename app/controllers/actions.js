@@ -20,10 +20,9 @@ exports.setup = function (text, phone) {
                         message: `PU ${puCode} Setup successfully`
                     }
                     sms.send(smsOptions).then(response => {
-                        console.log(response);
                     })
                         .catch(error => {
-                            console.log(error);
+                            
                         });
                 }
                 else{
@@ -32,10 +31,10 @@ exports.setup = function (text, phone) {
                         message: `PU ${puCode} Does not exist`
                     }
                     sms.send(smsOptions).then(response => {
-                        console.log(response);
+                        
                     })
                         .catch(error => {
-                            console.log(error);
+                            
                         });
                 }
             })
@@ -49,10 +48,10 @@ exports.setup = function (text, phone) {
                 message: 'This official is not registered'
             }
             sms.send(smsOptions).then(response => {
-                console.log(response);
+                
             })
                 .catch(error => {
-                    console.log(error);
+                    
                 });
     
     
@@ -74,10 +73,10 @@ exports.accreditationStarted = function (text, phone) {
                         message: `PU ${puCode} Accreditation successfully started`
                     }
                     sms.send(smsOptions).then(response => {
-                        console.log(response);
+                        
                     })
                         .catch(error => {
-                            console.log(error);
+                            
                         });
                 }
                 else{
@@ -86,10 +85,10 @@ exports.accreditationStarted = function (text, phone) {
                         message: `PU ${puCode} Does not exist`
                     }
                     sms.send(smsOptions).then(response => {
-                        console.log(response);
+                        
                     })
                         .catch(error => {
-                            console.log(error);
+                            
                         });
                 }
             })
@@ -103,10 +102,10 @@ exports.accreditationStarted = function (text, phone) {
                 message: 'This official is not registered'
             }
             sms.send(smsOptions).then(response => {
-                console.log(response);
+                
             })
                 .catch(error => {
-                    console.log(error);
+                    
                 });
     
     
@@ -116,25 +115,22 @@ exports.accreditationStarted = function (text, phone) {
 }
 
 exports.accreditationEnded = function (text, phone) {
-    console.log('in ended')
     const puCode = text.split(" ")[1]
     const numberAccredited = text.split(" ")[2]
 
     Official.find({ phone }).then((singleOfficial) => {
-        console.log(singleOfficial)
         if (singleOfficial.length !==0 ) {
             PU.findOneAndUpdate({code: puCode},{accreditationEnded: true, numberAccredited}).then((pu) => {
-                console.log('ended?',pu)
                 if(pu){
                     const smsOptions = {
                         to: phone,
                         message: `PU ${puCode} Accreditation successfully ended with ${numberAccredited} people accredited`
                     }
                     sms.send(smsOptions).then(response => {
-                        console.log(response);
+                        
                     })
                     .catch(error => {
-                        console.log(error);
+                        
                     });
                 }
                 else{
@@ -143,10 +139,10 @@ exports.accreditationEnded = function (text, phone) {
                         message: `PU ${puCode} Does not exist`
                     }
                     sms.send(smsOptions).then(response => {
-                        console.log(response);
+                        
                     })
                         .catch(error => {
-                            console.log(error);
+                            
                         });
                 }
             })
@@ -160,10 +156,10 @@ exports.accreditationEnded = function (text, phone) {
                 message: 'This official is not registered'
             }
             sms.send(smsOptions).then(response => {
-                console.log(response);
+                
             })
                 .catch(error => {
-                    console.log(error);
+                    
                 });
     
     
@@ -184,10 +180,10 @@ exports.votingStarted = function (text, phone) {
                         message: `PU ${puCode} Voting Started successfully`
                     }
                     sms.send(smsOptions).then(response => {
-                        console.log(response);
+                        
                     })
                         .catch(error => {
-                            console.log(error);
+                            
                         });
                 }
                 else{
@@ -196,10 +192,10 @@ exports.votingStarted = function (text, phone) {
                         message: `PU ${puCode} Does not exist`
                     }
                     sms.send(smsOptions).then(response => {
-                        console.log(response);
+                        
                     })
                         .catch(error => {
-                            console.log(error);
+                            
                         });
                 }
             })
@@ -213,10 +209,10 @@ exports.votingStarted = function (text, phone) {
                 message: 'This official is not registered'
             }
             sms.send(smsOptions).then(response => {
-                console.log(response);
+                
             })
                 .catch(error => {
-                    console.log(error);
+                    
                 });
     
     
@@ -238,10 +234,10 @@ exports.votingEnded = function (text, phone) {
                         message: `PU ${puCode} voting ended successfully`
                     }
                     sms.send(smsOptions).then(response => {
-                        console.log(response);
+                        
                     })
                         .catch(error => {
-                            console.log(error);
+                            
                         });
                 }
                 else{
@@ -250,10 +246,10 @@ exports.votingEnded = function (text, phone) {
                         message: `PU ${puCode} Does not exist`
                     }
                     sms.send(smsOptions).then(response => {
-                        console.log(response);
+                        
                     })
                         .catch(error => {
-                            console.log(error);
+                            
                         });
                 }
             })
@@ -267,10 +263,10 @@ exports.votingEnded = function (text, phone) {
                 message: 'This official is not registered'
             }
             sms.send(smsOptions).then(response => {
-                console.log(response);
+                
             })
                 .catch(error => {
-                    console.log(error);
+                    
                 });
     
     
@@ -294,10 +290,10 @@ exports.results = function (text, phone) {
                         message: `PU ${puCode} results successfully added`
                     }
                     sms.send(smsOptions).then(response => {
-                        console.log(response);
+                        
                     })
                         .catch(error => {
-                            console.log(error);
+                            
                         });
                 }
                 else{
@@ -306,10 +302,10 @@ exports.results = function (text, phone) {
                         message: `PU ${puCode} Does not exist`
                     }
                     sms.send(smsOptions).then(response => {
-                        console.log(response);
+                        
                     })
                         .catch(error => {
-                            console.log(error);
+                            
                         });
                 }
             })
@@ -323,10 +319,10 @@ exports.results = function (text, phone) {
                 message: 'This official is not registered'
             }
             sms.send(smsOptions).then(response => {
-                console.log(response);
+                
             })
                 .catch(error => {
-                    console.log(error);
+                    
                 });
     
     

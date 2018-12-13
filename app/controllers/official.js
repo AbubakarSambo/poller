@@ -35,10 +35,8 @@ exports.create = function (text,phone ) {
                 message: `Phone Number in use already`
             }
             sms.send(smsOptions).then(response => {
-                console.log(response);
             })
             .catch(error => {
-                console.log(error);
             });
           }
           else{
@@ -49,10 +47,8 @@ exports.create = function (text,phone ) {
                         message: `Could not register: ${err}`
                     }
                     sms.send(smsOptions).then(response => {
-                        console.log(response);
                     })
                     .catch(error => {
-                        console.log(error);
                     });
                 } else {
                     const smsOptions = {
@@ -60,10 +56,8 @@ exports.create = function (text,phone ) {
                         message: 'Registered Successfully'
                     }
                     sms.send(smsOptions).then(response => {
-                        console.log(response);
                     })
                     .catch(error => {
-                        console.log(error);
                     });
                 }
             });
@@ -76,7 +70,6 @@ exports.assignSupervisor = (req, res) => {
     const { official, supervisor } = body
 
     Supervisor.find({phone: supervisor}).then((singleSupervisor) => {
-        console.log(singleSupervisor,'lll')
         Official.findOneAndUpdate({ phone: official }, { supervisor: singleSupervisor }).then((item) => {
             res.status(200).send({message: 'Successfully added supervisor to official'})
         }).catch((error) => {
@@ -115,7 +108,6 @@ exports.createViaApi = function (req,res ) {
                     }
                 })
                 .catch(error => {
-                    console.log('error')
                     res.status(500).send(error);
                 })
             })
