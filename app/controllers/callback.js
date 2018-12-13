@@ -11,6 +11,12 @@ exports.accept = function (req, res) {
 
     const action = text.split(" ")[0]
     
+    // 1 pucode -setup 
+    // 2 pucode -accreditaion begin
+    // 3 pucode # -accreditation ended # registered
+    // 4 pucode -voting started
+    // 5 pucode -voting ended
+    // 6 pucode apc pdp others - results
 
     switch(action){
         case 'Register':

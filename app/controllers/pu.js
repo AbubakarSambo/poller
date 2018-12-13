@@ -29,3 +29,13 @@ exports.create = function (req,res ) {
           }
     })
 }
+
+
+exports.getPu = function(req,res){
+    PU.find({}).then((pus) => {
+        return res.status(200).send(pus);
+    }).catch(error => {
+        res.status(500).send(error);
+    })
+
+}

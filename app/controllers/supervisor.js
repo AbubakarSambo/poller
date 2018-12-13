@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 var Supervisor = require('../models/supervisor.js');
 var PU = require('../models/pu.js');
 var config = require('../../config/config.js');
@@ -67,7 +69,7 @@ exports.create = function (text,phone ) {
 
 exports.createViaApi = function (req,res ) {
 
-    const { firstName, lastName, state,phone, lga ,puCode } = req.body
+    const { firstName, lastName, state,phone, lga ,puCode, username, password } = req.body
 
     Supervisor.find({phone}).then((singleSupervisor) => {
         if(singleSupervisor.length !== 0){
@@ -75,16 +77,17 @@ exports.createViaApi = function (req,res ) {
           }
           else{
             PU.findOne({code: puCode}).then((pu) => {
-                let supervisor = new Supervisor({ firstName, lastName, phone, state, lga, puCode, pu })
+                let supervisor = new Supervisor({ firstName, lastName, phone, state, lga, puCode, pu, username, password })
                 supervisor.save().then((newSupervisor) => {
-                    return res.status(200).send(newSupervisor)
+                    const token = jwt.sign({ id: newSupervisor._id }, config.secretKey, { expiresIn: 86400 });
+                    return res.status(201).send({ token });
                 })
                 .catch((err) => {
-                    return res.status(400).send({message: err})
+                    return res.status(400).send({message: 'could not save'})
                 })
             })
             .catch(error => {
-                res.status(500).send(error);
+                res.status(500).send('couldnt find pu');
             })
             
           }

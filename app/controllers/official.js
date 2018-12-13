@@ -103,7 +103,8 @@ exports.createViaApi = function (req,res ) {
                     if(singleSupervisor.length !==0){
                         let newOfficial = new Official({ firstName, lastName, phone, pu: singlePu, supervisor: singleSupervisor})
                         newOfficial.save().then((newOffish) => {
-                            return res.status(200).send(newOffish)
+                            const token = jwt.sign({ id: newOffish._id }, config.secretKey, { expiresIn: 86400 });
+                            return res.status(201).send({ token });
                         })
                         .catch((err) => {
                             return res.status(500).send({message: err})

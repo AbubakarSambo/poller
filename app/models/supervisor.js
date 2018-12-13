@@ -8,6 +8,8 @@ var SupervisorSchema = mongoose.Schema({
     state: String,
     pu: { type: Schema.Types.ObjectId, ref: 'PU' },
     lga: String,
+    username: String,
+    password: String
 }, {
     timestamps: true
 });

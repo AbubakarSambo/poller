@@ -116,13 +116,15 @@ exports.accreditationStarted = function (text, phone) {
 }
 
 exports.accreditationEnded = function (text, phone) {
-
+    console.log('in ended')
     const puCode = text.split(" ")[1]
     const numberAccredited = text.split(" ")[2]
 
     Official.find({ phone }).then((singleOfficial) => {
+        console.log(singleOfficial)
         if (singleOfficial.length !==0 ) {
-            PU.findOneAndUpdate({code: puCode},{accreditationStarted: true, numberAccredited}).then((pu) => {
+            PU.findOneAndUpdate({code: puCode},{accreditationEnded: true, numberAccredited}).then((pu) => {
+                console.log('ended?',pu)
                 if(pu){
                     const smsOptions = {
                         to: phone,
@@ -131,9 +133,9 @@ exports.accreditationEnded = function (text, phone) {
                     sms.send(smsOptions).then(response => {
                         console.log(response);
                     })
-                        .catch(error => {
-                            console.log(error);
-                        });
+                    .catch(error => {
+                        console.log(error);
+                    });
                 }
                 else{
                     const smsOptions = {
