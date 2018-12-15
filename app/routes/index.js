@@ -12,4 +12,5 @@ module.exports = function(app) {
     app.post('/official/register', official.createViaApi )
     app.post('/pu/register', pu.create )
     app.get('/pu', pu.getPu )
+    app.get('/official', official.getOfficials )
 }
