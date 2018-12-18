@@ -93,7 +93,6 @@ exports.createViaApi = function (req,res ) {
           }
           else{
             PU.findOne({code: puCode}).then((singlePu) => {
-                console.log(singlePu)
                 Supervisor.findOne({phone: supervisor}).then((singleSupervisor) => {
                     if(singleSupervisor.length !==0){
                         let newOfficial = new Official({ firstName, lastName, phone, pu: singlePu, supervisor: singleSupervisor})
@@ -122,7 +121,7 @@ exports.createViaApi = function (req,res ) {
 }
 
 exports.getOfficials = function(req, res){
-    Official.find().populate(['PU','Supervisor']).then((officials) => {
+    Official.find().populate(['pu','supervisor']).then((officials) => {
         if (!officials) return res.status(404).send({message: 'No Official found.'});
         return res.status(200).send({ officials });
     })

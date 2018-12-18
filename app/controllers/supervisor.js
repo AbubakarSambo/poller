@@ -71,7 +71,8 @@ exports.createViaApi = function (req,res ) {
           }
           else{
             PU.findOne({code: puCode}).then((pu) => {
-                let supervisor = new Supervisor({ firstName, lastName, phone, state, lga, puCode, pu, username, password })
+                const hashedPassword = bcrypt.hashSync(password, 8)
+                let supervisor = new Supervisor({ firstName, lastName, phone, state, lga, puCode, pu, username, password: hashedPassword })
                 supervisor.save().then((newSupervisor) => {
                     const token = jwt.sign({ id: newSupervisor._id }, config.secretKey, { expiresIn: 86400 });
                     return res.status(201).send({ token });
@@ -87,3 +88,15 @@ exports.createViaApi = function (req,res ) {
           }
     })
 }
+
+exports.login = function (req, res) {
+    const { password, username } = req.body
+    Supervisor.findOne({ username }).then((supervisor) => {
+        if (!supervisor) return res.status(404).send({message: 'That Username does not exist'});
+        const passwordIsValid = bcrypt.compareSync(password, supervisor.password);
+        if (!passwordIsValid) return res.status(401).send({ message: 'Invalid Password' });
+        const token = jwt.sign({ id: supervisor._id }, config.secretKey, { expiresIn: 86400 });
+        return res.status(200).send({ supervisor, token });
+    })
+
+};

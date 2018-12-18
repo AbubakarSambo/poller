@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+var mongoosePaginate = require('mongoose-paginate')
 
 const PuSchema = mongoose.Schema({
     name: String,
@@ -23,4 +23,5 @@ const PuSchema = mongoose.Schema({
     timestamps: true
 });
 
+PuSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model('PU', PuSchema);
