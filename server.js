@@ -2,8 +2,10 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 // create express app
-var app = express();
+var cors = require('cors')
+var app = express()
 
+app.use(cors())
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
 
