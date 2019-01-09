@@ -61,6 +61,22 @@ exports.getPuByWard = function(req,res){
     })
 
 }
+exports.getResultsByWard = function(req,res){
+    const { ward } = req.params
+    PU.find({ward}).then((pus) => {
+        console.log(pus)
+        const apc = pus.reduce((acc=0,cv) => {
+            console.log(acc,cv)
+            return acc + cv.apc ? cv.apc : 0
+        })
+        const pdp = pus.reduce((acc,cv) => {
+            return acc + cv.pdp ? cv.pdp : 0
+        },0)
+        console.log(apc,pdp)
+        //return res.status(200).send(pus);
+    })
+
+}
 
 exports.getAllStates = async function(req,res){
     const states  = await this.getStates()

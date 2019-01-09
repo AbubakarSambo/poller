@@ -10,7 +10,7 @@ sms = AfricasTalking.SMS
 // Create and Save a new Note
 exports.setup = function (text, phone) {
     const puCode = text.split(" ")[1]
-
+    console.log(puCode)
     Official.find({ phone }).then((singleOfficial) => {
         if (singleOfficial.length !==0 ) {
             PU.findOneAndUpdate({code: puCode},{setup: true}).then((pu) => {
@@ -63,6 +63,7 @@ exports.setup = function (text, phone) {
 exports.accreditationStarted = function (text, phone) {
 
     const puCode = text.split(" ")[1]
+    console.log('2',puCode)
 
     Official.find({ phone }).then((singleOfficial) => {
         if (singleOfficial.length !==0 ) {
@@ -283,7 +284,7 @@ exports.results = function (text, phone) {
 
     Official.find({ phone }).then((singleOfficial) => {
         if (singleOfficial.length !==0 ) {
-            PU.findOneAndUpdate({code: puCode},{results: `APC: ${apc}, PDP: ${pdp}, Others: ${others}`}).then((pu) => {
+            PU.findOneAndUpdate({code: puCode},{apc, pdp}).then((pu) => {
                 if(pu){
                     const smsOptions = {
                         to: phone,

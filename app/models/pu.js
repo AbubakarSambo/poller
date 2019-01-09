@@ -19,6 +19,8 @@ const PuSchema = mongoose.Schema({
     votingStarted: Boolean,
     votingEnded: Boolean,
     results: String,
+    apc: Number,
+    pdp: Number,
 }, {
     timestamps: true
 });

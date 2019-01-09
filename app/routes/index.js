@@ -6,6 +6,7 @@ module.exports = function(app) {
     const pu = require('../controllers/pu.js');
     const verifyToken = require('../middleware/verifytoken.js');
 
+    console.log('in route index')
     // Create a new Note
     app.post('/callback', callback.accept);
     app.post('/official/assignsupervisor', official.assignSupervisor )
@@ -16,6 +17,7 @@ module.exports = function(app) {
     app.get('/pu/:state',verifyToken, pu.getPuByState )
     app.get('/pu/lga/:lga',verifyToken, pu.getPuByLga )
     app.get('/pu/ward/:ward',verifyToken, pu.getPuByWard )
+    app.get('/pu/results/ward/:ward',verifyToken, pu.getResultsByWard )
     app.get('/states', pu.getAllStates )
     app.get('/lgas/:state', pu.getLgas )
     app.get('/wards/:lga', pu.getWards )
