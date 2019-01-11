@@ -33,13 +33,39 @@ exports.create = function (req,res ) {
 
 exports.getPuByState = function(req,res){
     const { state } = req.params
-    const { page, limit } = req.query
+    const { page=1, limit=10 } = req.query
     PU.paginate({state},{ page, limit: parseInt(limit) }).then((pus) => {
         return res.status(200).send(pus);
     }).catch(error => {
         res.status(500).send(error);
     })
 
+}
+
+exports.getPuCount = async function(req,res){
+    const { state } = req.params
+    const { page=1, limit=10 } = req.query
+        const lgas = await PU.find({state}).distinct('lga')
+        let data = lgas.map(async (lga) => {
+
+            const pollingUnitsInLga = await PU.find({lga}).count()
+            const wardsinLga = await PU.find({lga}).distinct('ward')
+            const wardsInLgaPromise =  wardsinLga.map( async (ward) => {
+                const pollingUnitsInWard = await PU.find({ward}).count()
+                return {
+                    ward,
+                    pollingUnitsInWard
+                }
+            })
+            const wards = await  Promise.all(wardsInLgaPromise)
+            return {
+                lga,
+                pollingUnitsInLga,
+                wards
+            }
+        })
+        const finalAns = await Promise.all(data)
+        return res.status(200).send(finalAns);
 }
 
 exports.getPuByLga = function(req,res){
@@ -64,15 +90,12 @@ exports.getPuByWard = function(req,res){
 exports.getResultsByWard = function(req,res){
     const { ward } = req.params
     PU.find({ward}).then((pus) => {
-        console.log(pus)
         const apc = pus.reduce((acc=0,cv) => {
-            console.log(acc,cv)
             return acc + cv.apc ? cv.apc : 0
         })
         const pdp = pus.reduce((acc,cv) => {
             return acc + cv.pdp ? cv.pdp : 0
         },0)
-        console.log(apc,pdp)
         //return res.status(200).send(pus);
     })
 
