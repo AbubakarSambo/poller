@@ -18,6 +18,7 @@ exports.setup = function (text, phone) {
                         to: phone,
                         message: `PU ${puCode} Setup successfully`
                     }
+                    console.log(new Date(),smsOptions)
                     sms.send(smsOptions).then(response => {
                     })
                         .catch(error => {

@@ -10,7 +10,7 @@ exports.accept = function (req, res) {
     const { text, from, date } = body
 
     const action = text.split(" ")[0]
-    
+
     // 1 pucode -setup 
     // 2 pucode -accreditaion begin
     // 3 pucode # -accreditation ended # registered

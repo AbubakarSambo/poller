@@ -16,6 +16,7 @@ module.exports = function(app) {
     app.post('/pu/register', pu.create )
     app.get('/pu/:state',verifyToken, pu.getPuByState )
     app.get('/count/pu/:state',verifyToken, pu.getPuCount )
+    app.get('/result/pu/:state',verifyToken, pu.getResultCount )
     app.get('/pu/lga/:lga',verifyToken, pu.getPuByLga )
     app.get('/pu/ward/:ward',verifyToken, pu.getPuByWard )
     app.get('/pu/results/ward/:ward',verifyToken, pu.getResultsByWard )
